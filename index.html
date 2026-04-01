@@ -686,13 +686,12 @@ async function runPipeline(){
     const low=aiSummary.filter(r=>r.Flag==='Low Sell-Through')
       .sort((a,b)=>(a.SellThrough_Pct||0)-(b.SellThrough_Pct||0)).slice(0,15);
 
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    const resp=await fetch('/api/claude',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
         'x-api-key':getKey(),
         'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-calls':'true',
       },
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
