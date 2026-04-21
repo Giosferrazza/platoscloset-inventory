@@ -253,7 +253,7 @@ footer { border-top:1px solid var(--border); padding:20px 24px; max-width:1200px
       <div class="upload-inner">
         <div class="upload-icon">&#x2191;</div>
         <div class="upload-title">DROP CSV HERE OR CLICK TO BROWSE</div>
-        <div class="upload-sub">Used Inventory Productivity.csv &mdash; exported from Winmark Reporting System</div>
+        <div class="upload-sub">Export from Winmark Used Inventory Productivity report</div>
       </div>
     </div>
 
@@ -609,7 +609,7 @@ async function runPipeline(){
       const dl=row[DETAIL_LABEL]?.trim()||'';
       const sm=scl.match(/\[(\d+)\]\s+(.+)/);if(!sm)continue;
       const sid=sm[1],sname=sm[2].trim();
-      const dm=dl.match(/:\s+.+:\s+(.+)$/);if(!dm)continue;
+      const dm=dl.match(/:\s+[^:]+:\s+(.+)$/)??dl.match(/\[\d+\]\s+(.+)$/);if(!dm)continue;
       const dname=dm[1].trim();
       months.forEach((month,mi)=>{
         factRecords.push({
