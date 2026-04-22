@@ -1,7 +1,7 @@
 {
   "name": "platoscloset-inventory",
   "version": "1.0.0",
-  "description": "The CSV processing pipeline now runs in Python using pandas and numpy:",
+  "description": "Retail inventory intelligence dashboard for Winmark CSV exports.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

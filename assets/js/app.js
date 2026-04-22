@@ -125,12 +125,25 @@ async function runPipeline() {
       body: JSON.stringify({ csvText: text })
     });
 
+    const readResponsePayload = async (response) => {
+      const responseText = await response.text();
+      if (!responseText) return null;
+      try {
+        return JSON.parse(responseText);
+      } catch {
+        return { raw: responseText };
+      }
+    };
+
     if (!processResp.ok) {
-      const e = await processResp.json();
-      throw new Error(e.error || 'Failed to process CSV');
+      const e = await readResponsePayload(processResp);
+      throw new Error(e?.details || e?.error || e?.raw || 'Failed to process CSV');
     }
 
-    const processed = await processResp.json();
+    const processed = await readResponsePayload(processResp);
+    if (!processed) {
+      throw new Error('Empty response from /api/process-inventory');
+    }
     const months = processed.months || [];
     const latestMonth = processed.latestMonth || months[months.length - 1] || '';
     const factRecords = processed.factRecords || [];

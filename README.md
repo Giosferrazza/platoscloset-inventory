@@ -2,29 +2,33 @@
 
 ## Data Processing Architecture
 
-The CSV processing pipeline now runs in Python using pandas and numpy:
+The runtime path is Vercel-friendly JavaScript only:
 
-- Python script: `scripts/process_inventory.py`
-- API route that invokes Python: `api/process-inventory.js`
-- Frontend caller: `assets/js/app.js`
+- Frontend reads the uploaded CSV as text
+- Frontend posts `csvText` to `/api/process-inventory`
+- `api/process-inventory.js` parses and processes the CSV in Node
+- The API returns JSON for the dashboard to render
 
-The browser uploads CSV data, posts it to `/api/process-inventory`, and receives:
+Shared processor:
+
+- `scripts/winmark-processor.js`
+
+Response shape includes:
 
 - `factRecords`
 - `aiSummary`
 - `months`
 - `latestMonth`
 - `flags`
+- `summary`
+- `buy_breakdown`
+- `inventory_aging`
+- `top_categories`
 
-## Python Dependencies
+## Manual export
 
-Install Python packages from `requirements.txt`:
+If you want to produce the clean JSON file locally, run:
 
 ```bash
-pip install -r requirements.txt
+node -e "const fs=require('fs'); const {processWinmarkCsv}=require('./scripts/winmark-processor'); const csv=fs.readFileSync('path/to/winmark.csv','utf8'); const out=processWinmarkCsv(csv,{logColumns:true}); fs.mkdirSync('data',{recursive:true}); fs.writeFileSync('data/clean.json', JSON.stringify({summary:out.summary,buy_breakdown:out.buy_breakdown,inventory_aging:out.inventory_aging,top_categories:out.top_categories}, null, 2));"
 ```
-
-Dependencies:
-
-- pandas
-- numpy
