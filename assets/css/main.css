@@ -193,3 +193,18 @@ footer { border-top:1px solid var(--border); padding:20px 24px; max-width:1200px
   .store-badge { display:none; }
   .aging-grid { grid-template-columns:repeat(2,1fr); }
 }
+
+/* Sticky table header */
+.table-scroll {
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.table-scroll .data-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--bg2);
+  box-shadow: 0 1px 0 var(--border);
+}

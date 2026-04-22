@@ -82,16 +82,16 @@ function buildFactRecords(rows) {
         Detail: detailName,
         Month: month,
         SubCat_BOM: cn(getCell(row, SUBCAT_BOM[monthIndex])),
-        SubCat_Sells: cn(getCell(row, SUBCAT_BUYS[monthIndex])),
-        SubCat_Buys: cn(getCell(row, SUBCAT_SELLS[monthIndex])),
+        SubCat_Sells: cn(getCell(row, SUBCAT_SELLS[monthIndex])),
+        SubCat_Buys: cn(getCell(row, SUBCAT_BUYS[monthIndex])),
         SubCat_EOM: cn(getCell(row, SUBCAT_EOM[monthIndex])),
         SubCat_SellThrough_Pct: cn(getCell(row, SUBCAT_ST[monthIndex])),
         SubCat_TurnRate: cn(getCell(row, SUBCAT_TURNRATE)),
         SubCat_LatestRetail: cn(getCell(row, SUBCAT_RETAIL)),
         SubCat_AvgRetail: cn(getCell(row, SUBCAT_AVG_RETAIL)),
         Detail_BOM: cn(getCell(row, DETAIL_BOM[monthIndex])),
-        Detail_Sells: cn(getCell(row, DETAIL_BUYS[monthIndex])),
-        Detail_Buys: cn(getCell(row, DETAIL_SELLS[monthIndex])),
+        Detail_Sells: cn(getCell(row, DETAIL_SELLS[monthIndex])),
+        Detail_Buys: cn(getCell(row, DETAIL_BUYS[monthIndex])),
         Detail_EOM: cn(getCell(row, DETAIL_EOM[monthIndex])),
         Detail_SellThrough_Pct: cn(getCell(row, DETAIL_ST[monthIndex])),
         Detail_TurnRate: cn(getCell(row, DETAIL_TURNRATE)),
@@ -118,8 +118,8 @@ function buildAiSummary(factRecords, months) {
     const avg3mo = recent.length
       ? recent.reduce((sum, candidate) => sum + (candidate.Detail_SellThrough_Pct || 0), 0) / recent.length
       : 0;
-    const total3MoBuys = recent.reduce((sum, candidate) => sum + (candidate.Detail_Sells || 0), 0);
-    const total3MoSells = recent.reduce((sum, candidate) => sum + (candidate.Detail_Buys || 0), 0);
+    const total3MoBuys = recent.reduce((sum, candidate) => sum + (candidate.Detail_Buys || 0), 0);
+    const total3MoSells = recent.reduce((sum, candidate) => sum + (candidate.Detail_Sells || 0), 0);
     const sellThrough = record.Detail_SellThrough_Pct;
     const turnRate = record.Detail_TurnRate;
 
@@ -134,8 +134,8 @@ function buildAiSummary(factRecords, months) {
       Subcategory: record.Subcategory,
       Detail: record.Detail,
       OnHand_BOM: record.Detail_BOM,
-      Buys_LatestMo: record.Detail_Sells,
-      Sells_LatestMo: record.Detail_Buys,
+      Buys_LatestMo: record.Detail_Buys,
+      Sells_LatestMo: record.Detail_Sells,
       OnHand_EOM: record.Detail_EOM,
       SellThrough_Pct: sellThrough,
       Avg3Mo_SellThrough_Pct: Math.round(avg3mo * 10) / 10,

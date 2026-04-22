@@ -70,22 +70,24 @@ function setupDropZone() {
 }
 
 function checkRunnable() {
-  document.getElementById('runBtn').disabled = !(selectedFile && getKey());
+  // API key check disabled for testing
+  document.getElementById('runBtn').disabled = !selectedFile;
 }
 
 function setStep(n) {
   for (let i = 1; i <= 5; i++) {
     const el = document.getElementById(`step${i}`);
+    if (!el) continue;
     el.classList.remove('active', 'done');
     const num = el.querySelector('.step-num');
     if (i < n) {
       el.classList.add('done');
-      num.textContent = '✓';
+      if (num) num.textContent = '✓';
     } else if (i === n) {
       el.classList.add('active');
-      num.textContent = String(i).padStart(2, '0');
+      if (num) num.textContent = String(i).padStart(2, '0');
     } else {
-      num.textContent = String(i).padStart(2, '0');
+      if (num) num.textContent = String(i).padStart(2, '0');
     }
   }
 }
@@ -93,9 +95,11 @@ function setStep(n) {
 function doneAll() {
   for (let i = 1; i <= 5; i++) {
     const el = document.getElementById(`step${i}`);
+    if (!el) continue;
     el.classList.remove('active');
     el.classList.add('done');
-    el.querySelector('.step-num').textContent = '✓';
+    const num = el.querySelector('.step-num');
+    if (num) num.textContent = '✓';
   }
 }
 
@@ -174,7 +178,8 @@ async function runPipeline() {
     document.getElementById('insightsMonth').textContent = latestMonth;
     document.getElementById('uploadResults').style.display = 'block';
 
-    setStep(5);
+    // Claude API step disabled for testing — re-enable block below when ready
+    /* setStep(5);
     const top = aiSummary
       .filter((r) => r.Flag === 'Strong Turner' || r.Flag === 'High Sell-Through')
       .sort((a, b) => (b.SellThrough_Pct || 0) - (a.SellThrough_Pct || 0))
@@ -224,7 +229,7 @@ Use actual category names. Under 400 words.`
       throw new Error(e.error?.message || 'API error');
     }
     const data = await resp.json();
-    document.getElementById('insightsText').textContent = data.content[0].text;
+    document.getElementById('insightsText').textContent = data.content[0].text; */
 
     doneAll();
   } catch (err) {

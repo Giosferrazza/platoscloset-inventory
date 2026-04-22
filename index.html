@@ -38,6 +38,7 @@
   <!-- ═══ UPLOAD & AI PANEL ═══ -->
   <div class="panel active" id="panel-upload">
 
+    <!-- API key card disabled for testing
     <div class="api-card">
       <label>API key</label>
       <div class="api-row">
@@ -46,6 +47,10 @@
       </div>
       <div class="api-status missing" id="apiStatus">&#x25CF; No key saved</div>
     </div>
+    -->
+    <!-- Stub elements kept so JS references don't break -->
+    <input type="hidden" id="apiKey">
+    <div id="apiStatus" style="display:none"></div>
 
     <div class="sec-label">Upload Winmark Report</div>
     <div class="upload-card" id="dropZone">
@@ -73,7 +78,8 @@
       <div class="step" id="step2"><div class="step-num">02</div><div class="step-info"><div class="step-name">Building Fact Table</div><div class="step-desc">Transforming to structured rows &mdash; Detail x Month</div></div></div>
       <div class="step" id="step3"><div class="step-num">03</div><div class="step-info"><div class="step-name">Generating AI Summary</div><div class="step-desc">Flagging performance across all detail categories</div></div></div>
       <div class="step" id="step4"><div class="step-num">04</div><div class="step-info"><div class="step-name">Building Dashboards</div><div class="step-desc">Rendering buy breakdown, aging, and event readiness charts</div></div></div>
-      <div class="step" id="step5"><div class="step-num">05</div><div class="step-info"><div class="step-name">Claude AI Analysis</div><div class="step-desc">Generating buying recommendations via Anthropic API</div></div></div>
+      <!-- Step 5 disabled for testing: <div class="step" id="step5"><div class="step-num">05</div><div class="step-info"><div class="step-name">Claude AI Analysis</div><div class="step-desc">Generating buying recommendations via Anthropic API</div></div></div> -->
+      <div class="step" id="step5" style="display:none"></div>
     </div>
 
     <div id="uploadResults" style="display:none">
@@ -86,6 +92,7 @@
         <div class="kpi"><div class="kpi-val white" id="ovTotal">--</div><div class="kpi-lbl">Total Categories</div></div>
       </div>
 
+      <!-- Claude AI Buying Plan disabled for testing
       <div class="sec-label">Claude AI Buying Plan</div>
       <div class="insights-card">
         <div class="insights-head">
@@ -94,6 +101,10 @@
         </div>
         <div class="insights-body" id="insightsText">Generating analysis...</div>
       </div>
+      -->
+      <!-- Stub elements kept so JS references don't break -->
+      <span id="insightsMonth" style="display:none"></span>
+      <div id="insightsText" style="display:none"></div>
 
       <div class="sec-label">Download Outputs</div>
       <div class="dl-grid">
@@ -141,8 +152,8 @@
 
       <div class="card">
         <div class="card-title">Category Detail — Latest Month</div>
-        <div style="overflow-x:auto">
-          <table class="data-table" id="bbTable">
+          <div class="table-scroll">
+            <table class="data-table" id="bbTable">
             <thead><tr>
               <th>Subcategory</th>
               <th>Detail</th>
