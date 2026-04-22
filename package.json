@@ -1,0 +1,24 @@
+{
+  "name": "platoscloset-inventory",
+  "version": "1.0.0",
+  "description": "The CSV processing pipeline now runs in Python using pandas and numpy:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giosferrazza/platoscloset-inventory.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Giosferrazza/platoscloset-inventory/issues"
+  },
+  "homepage": "https://github.com/Giosferrazza/platoscloset-inventory#readme",
+  "dependencies": {
+    "papaparse": "^5.5.3"
+  }
+}
