@@ -63,11 +63,11 @@ export function buildBuyBreakdown(aiSummary, factRecords, months, latestMonth, c
 
   const monthlyBuys = months.map((m) => {
     const recs = factRecords.filter((r) => r.Month === m);
-    return recs.reduce((s, r) => s + (r.Detail_Sells || 0), 0);
+    return recs.reduce((s, r) => s + (r.Detail_Buys || 0), 0);
   });
   const monthlySells = months.map((m) => {
     const recs = factRecords.filter((r) => r.Month === m);
-    return recs.reduce((s, r) => s + (r.Detail_Buys || 0), 0);
+    return recs.reduce((s, r) => s + (r.Detail_Sells || 0), 0);
   });
 
   destroyChart(charts, 'trend');
