@@ -1,5 +1,5 @@
 import { delay, dlCSV } from './utils.js';
-import { buildBuyBreakdown, buildAging, buildEventReadiness } from './dashboards.js';
+import { buildBuyBreakdown, buildAging, buildEventReadiness, buildJsonOverview } from './dashboards.js';
 
 let selectedFile = null;
 let factTableData = null;
@@ -255,5 +255,31 @@ window.runPipeline = runPipeline;
 window.downloadFact = downloadFact;
 window.downloadAI = downloadAI;
 
+async function loadJsonData() {
+  try {
+    const [summaryRes, currentRes, monthlyRes] = await Promise.all([
+      fetch('assets/data/dashboard_summary.json'),
+      fetch('assets/data/web_inventory_current.json'),
+      fetch('assets/data/web_inventory_monthly.json')
+    ]);
+
+    const summary = await summaryRes.json();
+    console.log('[Dashboard] dashboard_summary.json loaded:', summary);
+
+    const currentData = await currentRes.json();
+    console.log(`[Dashboard] web_inventory_current.json loaded: ${currentData.length} records`);
+
+    const monthlyData = await monthlyRes.json();
+    console.log(`[Dashboard] web_inventory_monthly.json loaded: ${monthlyData.length} records`);
+
+    buildJsonOverview(summary, currentData, monthlyData, charts);
+  } catch (err) {
+    console.error('[Dashboard] Failed to load JSON data:', err);
+    const el = document.getElementById('ov-loading');
+    if (el) el.textContent = 'Failed to load data. Check console for details.';
+  }
+}
+
 initFromSession();
 setupDropZone();
+loadJsonData();

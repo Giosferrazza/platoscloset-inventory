@@ -26,7 +26,8 @@
 
 <div class="nav-tabs">
   <div class="nav-inner">
-    <button class="nav-tab active" onclick="showTab('upload')">Upload &amp; AI</button>
+    <button class="nav-tab active" onclick="showTab('overview')" id="tab-overview">Overview</button>
+    <button class="nav-tab" onclick="showTab('upload')">Upload &amp; AI</button>
     <button class="nav-tab" onclick="showTab('buybreakdown')" id="tab-buybreakdown">Buy Breakdown</button>
     <button class="nav-tab" onclick="showTab('aging')" id="tab-aging">Inventory Aging</button>
     <button class="nav-tab" onclick="showTab('events')" id="tab-events">Event Readiness</button>
@@ -35,8 +36,95 @@
 
 <div class="main">
 
+  <!-- ═══ OVERVIEW PANEL ═══ -->
+  <div class="panel active" id="panel-overview">
+    <div id="ov-loading" style="text-align:center;padding:80px 0;color:var(--gray);font-family:'JetBrains Mono',monospace;font-size:13px;">Loading inventory data...</div>
+    <div id="ov-content" style="display:none">
+
+      <div class="sec-label">Inventory Overview</div>
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="kpi"><div class="kpi-val green" id="ov-totalUnits">--</div><div class="kpi-lbl">Total Current Units</div></div>
+        <div class="kpi"><div class="kpi-val blue" id="ov-retailVal">--</div><div class="kpi-lbl">Total Retail Value</div></div>
+        <div class="kpi"><div class="kpi-val yellow" id="ov-costVal">--</div><div class="kpi-lbl">Total Cost Value</div></div>
+        <div class="kpi"><div class="kpi-val white" id="ov-avgTurn">--</div><div class="kpi-lbl">Avg Turn Rate</div></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Sales vs Buys Over Time</div>
+          <div class="chart-wrap"><canvas id="ov-salesBuysChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Sell-Through Trend</div>
+          <div class="chart-wrap"><canvas id="ov-stTrendChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">BOM Units Over Time</div>
+          <div class="chart-wrap"><canvas id="ov-bomChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">EOM Units Over Time</div>
+          <div class="chart-wrap"><canvas id="ov-eomChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-title">Top Current Units</div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Category</th><th>Units</th><th>Turn</th><th>IMU</th></tr></thead>
+              <tbody id="ov-topTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Fast Movers</div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Category</th><th>Units</th><th>Turn</th><th>IMU</th></tr></thead>
+              <tbody id="ov-fastTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Slow Movers</div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Category</th><th>Units</th><th>Turn</th><th>IMU</th></tr></thead>
+              <tbody id="ov-slowTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-label">Current Inventory by Category</div>
+      <div class="card">
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr>
+              <th>Subcategory</th>
+              <th>Category</th>
+              <th>Code</th>
+              <th>Units</th>
+              <th>Retail</th>
+              <th>Cost</th>
+              <th>Turn Rate</th>
+              <th>IMU %</th>
+            </tr></thead>
+            <tbody id="ov-invTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ═══ UPLOAD & AI PANEL ═══ -->
-  <div class="panel active" id="panel-upload">
+  <div class="panel" id="panel-upload">
 
     <!-- API key card disabled for testing
     <div class="api-card">
