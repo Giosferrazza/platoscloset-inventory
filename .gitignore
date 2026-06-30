@@ -1,5 +1,8 @@
 .vercel
 .env*.local
 .venv/
+.venv-1/
 node_modules/.venv/
 node_modules/
+__pycache__/
+*.pyc
