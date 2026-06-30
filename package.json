@@ -4,7 +4,8 @@
   "description": "Retail inventory intelligence dashboard for Winmark CSV exports.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "process": "node scripts/winmark-processor.js",
+    "test": "node -e \"require('./scripts/winmark-processor'); require('./api/process-inventory'); console.log('Node backend modules load')\""
   },
   "repository": {
     "type": "git",

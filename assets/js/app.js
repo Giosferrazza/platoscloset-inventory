@@ -15,36 +15,6 @@ function showTab(name) {
   if (matchingTab) matchingTab.classList.add('active');
 }
 
-function saveKey() {
-  const k = document.getElementById('apiKey').value.trim();
-  if (!k.startsWith('sk-ant-')) {
-    setStatus('Invalid key format', 'missing');
-    return;
-  }
-  sessionStorage.setItem('ak', k);
-  setStatus('&#x25CF; Key saved for this session', 'ok');
-  checkRunnable();
-}
-
-function getKey() {
-  return sessionStorage.getItem('ak') || '';
-}
-
-function setStatus(msg, cls) {
-  const el = document.getElementById('apiStatus');
-  el.innerHTML = msg;
-  el.className = `api-status ${cls}`;
-}
-
-function initFromSession() {
-  const k = getKey();
-  if (k) {
-    document.getElementById('apiKey').value = k;
-    setStatus('&#x25CF; Key loaded from session', 'ok');
-  }
-  checkRunnable();
-}
-
 function handleFile(file) {
   if (!file) return;
   selectedFile = file;
@@ -70,12 +40,11 @@ function setupDropZone() {
 }
 
 function checkRunnable() {
-  // API key check disabled for testing
   document.getElementById('runBtn').disabled = !selectedFile;
 }
 
 function setStep(n) {
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 4; i++) {
     const el = document.getElementById(`step${i}`);
     if (!el) continue;
     el.classList.remove('active', 'done');
@@ -93,7 +62,7 @@ function setStep(n) {
 }
 
 function doneAll() {
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 4; i++) {
     const el = document.getElementById(`step${i}`);
     if (!el) continue;
     el.classList.remove('active');
@@ -175,61 +144,7 @@ async function runPipeline() {
     document.getElementById('ovStrong').textContent = flags.strong;
     document.getElementById('ovLow').textContent = flags.low;
     document.getElementById('ovTotal').textContent = aiSummary.length;
-    document.getElementById('insightsMonth').textContent = latestMonth;
     document.getElementById('uploadResults').style.display = 'block';
-
-    // Claude API step disabled for testing — re-enable block below when ready
-    /* setStep(5);
-    const top = aiSummary
-      .filter((r) => r.Flag === 'Strong Turner' || r.Flag === 'High Sell-Through')
-      .sort((a, b) => (b.SellThrough_Pct || 0) - (a.SellThrough_Pct || 0))
-      .slice(0, 15);
-    const low = aiSummary
-      .filter((r) => r.Flag === 'Low Sell-Through')
-      .sort((a, b) => (a.SellThrough_Pct || 0) - (b.SellThrough_Pct || 0))
-      .slice(0, 15);
-
-    const resp = await fetch('/api/claude', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': getKey(),
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
-        messages: [{
-          role: 'user',
-          content: `You are a retail inventory analyst for Plato's Closet Store #80209 in Reno, NV - a used clothing resale store.
-
-Analyze this inventory data for ${latestMonth}.
-
-SUMMARY: Strong Turners: ${flags.strong} | High Sell-Through: ${flags.high} | Low Sell-Through: ${flags.low} | Normal: ${flags.normal}
-
-TOP PERFORMERS:
-${JSON.stringify(top.map((r) => ({ detail: r.Detail, st: r.SellThrough_Pct, avg3mo: r.Avg3Mo_SellThrough_Pct, tr: r.TurnRate, buys3mo: r.Total3Mo_Buys, onHand: r.OnHand_EOM, flag: r.Flag })), null, 1)}
-
-UNDERPERFORMERS:
-${JSON.stringify(low.map((r) => ({ detail: r.Detail, st: r.SellThrough_Pct, avg3mo: r.Avg3Mo_SellThrough_Pct, tr: r.TurnRate, onHand: r.OnHand_EOM })), null, 1)}
-
-Provide exactly:
-**Strengths** - top 3-4 categories to keep buying aggressively (cite specific numbers)
-**Weaknesses** - top 3-4 dead weight categories (cite specific numbers)
-**Buying Plan** - specific actions for next month
-**Immediate Action** - one thing the store manager should do THIS WEEK
-
-Use actual category names. Under 400 words.`
-        }]
-      })
-    });
-
-    if (!resp.ok) {
-      const e = await resp.json();
-      throw new Error(e.error?.message || 'API error');
-    }
-    const data = await resp.json();
-    document.getElementById('insightsText').textContent = data.content[0].text; */
 
     doneAll();
   } catch (err) {
@@ -249,7 +164,6 @@ function downloadAI() {
 }
 
 window.showTab = showTab;
-window.saveKey = saveKey;
 window.handleFile = handleFile;
 window.runPipeline = runPipeline;
 window.downloadFact = downloadFact;
@@ -280,6 +194,6 @@ async function loadJsonData() {
   }
 }
 
-initFromSession();
+checkRunnable();
 setupDropZone();
 loadJsonData();
